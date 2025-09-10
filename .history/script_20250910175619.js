@@ -28,10 +28,6 @@ class StudyPlannerKanban {
         document.getElementById('addCardBtn').addEventListener('click', () => {
             this.openCardModal();
         });
-        
-        document.getElementById('statsBtn').addEventListener('click', () => {
-            this.openStatsModal();
-        });
 
         // Add column button
         document.getElementById('addColumnBtn').addEventListener('click', () => {

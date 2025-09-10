@@ -72,15 +72,6 @@ body {
     flex-direction: column;
 }
 
-/* Column Colors */
-.board-column.color-blue { border-top: 3px solid #007acc; }
-.board-column.color-green { border-top: 3px solid #28a745; }
-.board-column.color-orange { border-top: 3px solid #ffa726; }
-.board-column.color-purple { border-top: 3px solid #8e24aa; }
-.board-column.color-red { border-top: 3px solid #dc3545; }
-.board-column.color-teal { border-top: 3px solid #20c997; }
-.board-column.color-pink { border-top: 3px solid #e91e63; }
-
 .column-header {
     padding: 16px 20px;
     border-bottom: 1px solid #404040;
@@ -93,31 +84,19 @@ body {
     color: #e1e1e1;
     font-size: 16px;
     font-weight: 600;
-    margin: 0;
-    flex: 1;
 }
 
-.column-header-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.column-menu-btn, .column-edit-btn {
+.column-menu-btn {
     background: none;
     border: none;
     color: #999;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     padding: 4px;
     border-radius: 4px;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.column-menu-btn:hover, .column-edit-btn:hover {
+.column-menu-btn:hover {
     background-color: #404040;
     color: #e1e1e1;
 }
@@ -128,71 +107,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
-}
-
-/* Add Column Section */
-.add-column-section {
-    min-width: 280px;
-    display: flex;
-    align-items: flex-start;
-    padding-top: 20px;
-}
-
-.add-column-btn {
-    background: none;
-    border: 2px dashed #555;
-    color: #999;
-    padding: 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-    width: 100%;
-    min-height: 120px;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.add-column-btn:hover {
-    border-color: #777;
-    color: #e1e1e1;
-    background-color: #2d2d2d;
-}
-
-/* Column Context Menu */
-.column-context-menu {
-    position: absolute;
-    background: #3d3d3d;
-    border: 1px solid #555;
-    border-radius: 6px;
-    padding: 8px 0;
-    z-index: 1001;
-    min-width: 180px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-.column-context-menu-item {
-    padding: 10px 16px;
-    color: #e1e1e1;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.column-context-menu-item:hover {
-    background-color: #4d4d4d;
-}
-
-.column-context-menu-item.danger {
-    color: #ff6b6b;
-}
-
-.column-context-menu-item.danger:hover {
-    background-color: #ff6b6b20;
 }
 
 /* Study Cards */

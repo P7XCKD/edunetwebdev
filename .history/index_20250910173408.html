@@ -16,51 +16,37 @@
             </div>
         </header>
 
-        <main class="kanban-board" id="kanbanBoard">
-            <!-- Columns will be dynamically generated -->
-            <div class="add-column-section">
-                <button class="add-column-btn" id="addColumnBtn">+ Add Section</button>
-            </div>
-        </main>
-    </div>
-
-    <!-- Column Edit Modal -->
-    <div id="columnModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="columnModalTitle">Add New Section</h2>
-                <button class="close-btn" id="closeColumnModal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="columnForm">
-                    <div class="form-group">
-                        <label for="columnName">Section Name *</label>
-                        <input type="text" id="columnName" placeholder="e.g., To Do, In Progress, Review" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="columnColor">Section Color</label>
-                        <select id="columnColor">
-                            <option value="default">Default (Gray)</option>
-                            <option value="blue">Blue</option>
-                            <option value="green">Green</option>
-                            <option value="orange">Orange</option>
-                            <option value="purple">Purple</option>
-                            <option value="red">Red</option>
-                            <option value="teal">Teal</option>
-                            <option value="pink">Pink</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="deleteColumn" class="delete-btn">DELETE SECTION</button>
-                <div class="modal-actions">
-                    <button type="button" id="cancelColumn" class="cancel-btn">CANCEL</button>
-                    <button type="button" id="saveColumn" class="save-btn">SAVE</button>
+        <main class="kanban-board">
+            <div class="board-column" data-status="todo">
+                <div class="column-header">
+                    <h3>To Do</h3>
+                    <button class="column-menu-btn">⋮</button>
+                </div>
+                <div class="column-content" id="todoColumn">
+                    <button class="add-card-column-btn" data-status="todo">+ ADD A CARD</button>
                 </div>
             </div>
-        </div>
+
+            <div class="board-column" data-status="in-progress">
+                <div class="column-header">
+                    <h3>In Progress</h3>
+                    <button class="column-menu-btn">⋮</button>
+                </div>
+                <div class="column-content" id="inProgressColumn">
+                    <button class="add-card-column-btn" data-status="in-progress">+ ADD A CARD</button>
+                </div>
+            </div>
+
+            <div class="board-column" data-status="completed">
+                <div class="column-header">
+                    <h3>Completed</h3>
+                    <button class="column-menu-btn">⋮</button>
+                </div>
+                <div class="column-content" id="completedColumn">
+                    <button class="add-card-column-btn" data-status="completed">+ ADD A CARD</button>
+                </div>
+            </div>
+        </main>
     </div>
 
     <!-- Card Modal -->

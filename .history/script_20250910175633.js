@@ -28,10 +28,6 @@ class StudyPlannerKanban {
         document.getElementById('addCardBtn').addEventListener('click', () => {
             this.openCardModal();
         });
-        
-        document.getElementById('statsBtn').addEventListener('click', () => {
-            this.openStatsModal();
-        });
 
         // Add column button
         document.getElementById('addColumnBtn').addEventListener('click', () => {
@@ -79,14 +75,10 @@ class StudyPlannerKanban {
         // Close modals when clicking outside
         window.addEventListener('click', (e) => {
             const cardModal = document.getElementById('cardModal');
-            const statsModal = document.getElementById('statsModal');
             const columnModal = document.getElementById('columnModal');
             
             if (e.target === cardModal) {
                 this.closeCardModal();
-            }
-            if (e.target === statsModal) {
-                this.closeStatsModal();
             }
             if (e.target === columnModal) {
                 this.closeColumnModal();
@@ -386,7 +378,6 @@ class StudyPlannerKanban {
 
         this.saveToStorage();
         this.renderCards();
-        this.updateStats();
         this.closeCardModal();
     }
 

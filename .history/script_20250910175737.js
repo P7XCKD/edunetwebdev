@@ -20,17 +20,12 @@ class StudyPlannerKanban {
         this.setupEventListeners();
         this.renderColumns();
         this.renderCards();
-        this.updateStats();
     }
 
     setupEventListeners() {
         // Header buttons
         document.getElementById('addCardBtn').addEventListener('click', () => {
             this.openCardModal();
-        });
-        
-        document.getElementById('statsBtn').addEventListener('click', () => {
-            this.openStatsModal();
         });
 
         // Add column button
@@ -79,14 +74,10 @@ class StudyPlannerKanban {
         // Close modals when clicking outside
         window.addEventListener('click', (e) => {
             const cardModal = document.getElementById('cardModal');
-            const statsModal = document.getElementById('statsModal');
             const columnModal = document.getElementById('columnModal');
             
             if (e.target === cardModal) {
                 this.closeCardModal();
-            }
-            if (e.target === statsModal) {
-                this.closeStatsModal();
             }
             if (e.target === columnModal) {
                 this.closeColumnModal();
@@ -183,7 +174,6 @@ class StudyPlannerKanban {
         this.saveColumnsToStorage();
         this.renderColumns();
         this.renderCards();
-        this.updateStats();
         this.closeColumnModal();
         this.showNotification('Section deleted successfully');
     }
@@ -386,7 +376,6 @@ class StudyPlannerKanban {
 
         this.saveToStorage();
         this.renderCards();
-        this.updateStats();
         this.closeCardModal();
     }
 
@@ -398,7 +387,6 @@ class StudyPlannerKanban {
             card.status = newStatus;
             this.saveToStorage();
             this.renderCards();
-            this.updateStats();
             this.showNotification(`Card moved to ${targetColumn.name}`);
         }
     }
@@ -563,37 +551,6 @@ class StudyPlannerKanban {
         return cardDiv;
     }
 
-    updateStats() {
-        const stats = {
-            total: this.cards.length,
-            overdue: this.cards.filter(c => 
-                c.dueDate && 
-                new Date(c.dueDate) < new Date()
-            ).length
-        };
-
-        // Add dynamic column stats
-        this.columns.forEach(column => {
-            stats[column.id] = this.cards.filter(c => c.status === column.id).length;
-        });
-
-        // Update stats modal
-        const totalElement = document.getElementById('totalCards');
-        const overdueElement = document.getElementById('overdueCards');
-
-        if (totalElement) totalElement.textContent = stats.total;
-        if (overdueElement) overdueElement.textContent = stats.overdue;
-
-        // Update dynamic column stats
-        const todoElement = document.getElementById('todoCards');
-        const inProgressElement = document.getElementById('inProgressCards');
-        const completedElement = document.getElementById('completedCards');
-
-        if (todoElement) todoElement.textContent = stats['todo'] || 0;
-        if (inProgressElement) inProgressElement.textContent = stats['in-progress'] || 0;
-        if (completedElement) completedElement.textContent = stats['completed'] || 0;
-    }
-
     closeCardModal() {
         document.getElementById('cardModal').style.display = 'none';
         this.currentEditId = null;
@@ -607,19 +564,9 @@ class StudyPlannerKanban {
             this.cards = this.cards.filter(c => c.id !== this.currentEditId);
             this.saveToStorage();
             this.renderCards();
-            this.updateStats();
             this.closeCardModal();
             this.showNotification('Card deleted successfully');
         }
-    }
-
-    openStatsModal() {
-        this.updateStats();
-        document.getElementById('statsModal').style.display = 'block';
-    }
-
-    closeStatsModal() {
-        document.getElementById('statsModal').style.display = 'none';
     }
 
     isTomorrow(dateString) {

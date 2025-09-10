@@ -39,7 +39,7 @@ body {
     gap: 12px;
 }
 
-.add-card-btn, .stats-btn {
+.add-card-btn {
     background-color: #3d3d3d;
     color: #e1e1e1;
     border: 1px solid #555;
@@ -50,7 +50,7 @@ body {
     transition: background-color 0.2s;
 }
 
-.add-card-btn:hover, .stats-btn:hover {
+.add-card-btn:hover {
     background-color: #4d4d4d;
 }
 
@@ -468,35 +468,6 @@ body {
 
 .save-btn:hover {
     background-color: #218838;
-}
-
-/* Stats Modal */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-}
-
-.stat-card {
-    background-color: #3d3d3d;
-    border: 1px solid #555;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-}
-
-.stat-number {
-    display: block;
-    font-size: 32px;
-    font-weight: 700;
-    color: #007acc;
-    margin-bottom: 8px;
-}
-
-.stat-label {
-    color: #bbb;
-    font-size: 14px;
-    font-weight: 500;
 }
 
 /* Empty State */
