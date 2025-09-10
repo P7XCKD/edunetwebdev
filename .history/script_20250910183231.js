@@ -38,25 +38,10 @@ class StudyPlannerKanban {
     }
 
     init() {
-        this.migrateExistingCards();
         this.setupEventListeners();
         this.renderColumns();
         this.renderCards();
         this.updateStats();
-    }
-
-    // Migrate existing cards to have task IDs
-    migrateExistingCards() {
-        let needsSave = false;
-        this.cards.forEach(card => {
-            if (!card.taskId) {
-                card.taskId = this.generateTaskId();
-                needsSave = true;
-            }
-        });
-        if (needsSave) {
-            this.saveToStorage();
-        }
     }
 
     setupEventListeners() {
@@ -1151,10 +1136,7 @@ class StudyPlannerKanban {
 
                     htmlContent += `
                         <div class="card">
-                            <div class="card-title">
-                                ${card.title}
-                                <span class="card-task-id">${card.taskId || 'TSK-000'}</span>
-                            </div>
+                            <div class="card-title">${card.title}</div>
                             <div class="card-meta">
                                 ${card.subject ? `<span class="card-subject">${card.subject}</span>` : ''}
                                 ${dueDateHtml}

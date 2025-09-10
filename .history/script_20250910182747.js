@@ -7,7 +7,6 @@ class StudyPlannerKanban {
         this.currentEditColumnId = null;
         this.draggedCard = null;
         this.isDragging = false;
-        this.taskCounter = parseInt(localStorage.getItem('taskCounter')) || 1;
         this.init();
     }
 
@@ -17,14 +16,6 @@ class StudyPlannerKanban {
             { id: 'in-progress', name: 'In Progress', color: 'blue', order: 2 },
             { id: 'completed', name: 'Completed', color: 'green', order: 3 }
         ];
-    }
-
-    // Generate user-friendly task ID
-    generateTaskId() {
-        const taskId = `TSK-${String(this.taskCounter).padStart(3, '0')}`;
-        this.taskCounter++;
-        localStorage.setItem('taskCounter', this.taskCounter.toString());
-        return taskId;
     }
 
     // Format date to dd/mm/yy
@@ -38,25 +29,10 @@ class StudyPlannerKanban {
     }
 
     init() {
-        this.migrateExistingCards();
         this.setupEventListeners();
         this.renderColumns();
         this.renderCards();
         this.updateStats();
-    }
-
-    // Migrate existing cards to have task IDs
-    migrateExistingCards() {
-        let needsSave = false;
-        this.cards.forEach(card => {
-            if (!card.taskId) {
-                card.taskId = this.generateTaskId();
-                needsSave = true;
-            }
-        });
-        if (needsSave) {
-            this.saveToStorage();
-        }
     }
 
     setupEventListeners() {
@@ -441,7 +417,6 @@ class StudyPlannerKanban {
             // Create new card
             const newCard = {
                 id: Date.now(),
-                taskId: this.generateTaskId(),
                 status: this.defaultStatus || (this.columns.length > 0 ? this.columns[0].id : 'todo'),
                 ...cardData
             };
@@ -606,10 +581,7 @@ class StudyPlannerKanban {
         }
 
         cardDiv.innerHTML = `
-            <div class="card-header">
-                <div class="card-title">${card.title}</div>
-                <div class="card-task-id">${card.taskId || 'TSK-000'}</div>
-            </div>
+            <div class="card-title">${card.title}</div>
             <div class="card-meta">
                 ${card.subject ? `<span class="card-subject">${card.subject}</span>` : ''}
                 ${dueDateHtml}
@@ -894,18 +866,6 @@ class StudyPlannerKanban {
                         font-weight: bold;
                         margin-bottom: 8px;
                         color: #e1e1e1;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                    }
-                    .card-task-id {
-                        font-size: 11px;
-                        font-weight: 600;
-                        color: #007acc;
-                        background: rgba(0, 122, 204, 0.2);
-                        padding: 2px 6px;
-                        border-radius: 4px;
-                        text-transform: uppercase;
                     }
                     .card-meta {
                         display: flex;
@@ -1151,10 +1111,7 @@ class StudyPlannerKanban {
 
                     htmlContent += `
                         <div class="card">
-                            <div class="card-title">
-                                ${card.title}
-                                <span class="card-task-id">${card.taskId || 'TSK-000'}</span>
-                            </div>
+                            <div class="card-title">${card.title}</div>
                             <div class="card-meta">
                                 ${card.subject ? `<span class="card-subject">${card.subject}</span>` : ''}
                                 ${dueDateHtml}

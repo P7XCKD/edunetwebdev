@@ -38,25 +38,10 @@ class StudyPlannerKanban {
     }
 
     init() {
-        this.migrateExistingCards();
         this.setupEventListeners();
         this.renderColumns();
         this.renderCards();
         this.updateStats();
-    }
-
-    // Migrate existing cards to have task IDs
-    migrateExistingCards() {
-        let needsSave = false;
-        this.cards.forEach(card => {
-            if (!card.taskId) {
-                card.taskId = this.generateTaskId();
-                needsSave = true;
-            }
-        });
-        if (needsSave) {
-            this.saveToStorage();
-        }
     }
 
     setupEventListeners() {
@@ -894,18 +879,6 @@ class StudyPlannerKanban {
                         font-weight: bold;
                         margin-bottom: 8px;
                         color: #e1e1e1;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                    }
-                    .card-task-id {
-                        font-size: 11px;
-                        font-weight: 600;
-                        color: #007acc;
-                        background: rgba(0, 122, 204, 0.2);
-                        padding: 2px 6px;
-                        border-radius: 4px;
-                        text-transform: uppercase;
                     }
                     .card-meta {
                         display: flex;
@@ -1151,10 +1124,7 @@ class StudyPlannerKanban {
 
                     htmlContent += `
                         <div class="card">
-                            <div class="card-title">
-                                ${card.title}
-                                <span class="card-task-id">${card.taskId || 'TSK-000'}</span>
-                            </div>
+                            <div class="card-title">${card.title}</div>
                             <div class="card-meta">
                                 ${card.subject ? `<span class="card-subject">${card.subject}</span>` : ''}
                                 ${dueDateHtml}
