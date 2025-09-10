@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Smart Study Planner</h1>
+            <p>Organize your studies and track your academic progress</p>
+        </header>
+
+        <main>
+            <!-- Add New Study Goal Form -->
+            <section class="form-section">
+                <h2>Add New Study Goal</h2>
+                <form id="studyForm">
+                    <div class="form-group">
+                        <label for="subject">Subject:</label>
+                        <input type="text" id="subject" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="topic">Topic/Task:</label>
+                        <input type="text" id="topic" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dueDate">Due Date:</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="priority">Priority:</label>
+                        <select id="priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea id="description" rows="3" placeholder="Optional notes..."></textarea>
+                    </div>
+                    
+                    <button type="submit">Add Study Goal</button>
+                </form>
+            </section>
+
+            <!-- Study Goals List -->
+            <section class="goals-section">
+                <h2>Your Study Goals</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+                <div id="goalsList" class="goals-list">
+                    <!-- Goals will be dynamically added here -->
+                </div>
+            </section>
+
+            <!-- Progress Overview -->
+            <section class="progress-section">
+                <h2>Progress Overview</h2>
+                <div class="progress-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalGoals">0</span>
+                        <span class="stat-label">Total Goals</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="completedGoals">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="pendingGoals">0</span>
+                        <span class="stat-label">Pending</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="overdue">0</span>
+                        <span class="stat-label">Overdue</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
