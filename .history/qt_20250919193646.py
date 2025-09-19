@@ -313,40 +313,6 @@ class StudyPlannerTester:
             print(f"Error creating test cards: {e}")
             return False
 
-    def ensure_test_cards_exist(self):
-        """Ensure we have test cards for testing"""
-        cards = self.driver.find_elements(By.CLASS_NAME, "study-card")
-        if len(cards) == 0:
-            # Add a simple test card
-            try:
-                add_btn = self.wait_for_element(By.ID, "addCardBtn")
-                if add_btn:
-                    add_btn.click()
-                    title_input = self.wait_for_element(By.ID, "cardTitle")
-                    if title_input:
-                        title_input.clear()
-                        title_input.send_keys("Test Card for Testing")
-                        save_btn = self.driver.find_element(By.ID, "saveCard")
-                        save_btn.click()
-                        time.sleep(1)
-                        return True
-            except:
-                pass
-        return len(cards) > 0
-
-    def test_multiple_cards_creation(self):
-        """Test 13: Create Multiple Test Cards"""
-        try:
-            success = self.create_multiple_test_cards()
-            cards = self.driver.find_elements(By.CLASS_NAME, "study-card")
-            card_count = len(cards)
-            
-            self.log_test("Multiple Cards Creation", success, f"Created {card_count} cards")
-            return success
-        except Exception as e:
-            self.log_test("Multiple Cards Creation", False, str(e))
-            return False
-
     def test_drag_and_drop(self):
         """Test 6: Drag and Drop Functionality"""
         try:
@@ -580,7 +546,6 @@ class StudyPlannerTester:
             self.test_add_card_modal,
             self.test_add_new_card,
             self.test_task_id_display,
-            self.test_multiple_cards_creation,  # Create more test data
             self.test_add_custom_section,
             self.test_drag_and_drop,
             self.test_card_context_menu,
@@ -588,7 +553,7 @@ class StudyPlannerTester:
             self.test_export_pdf,
             self.test_local_storage,
             self.test_responsive_design,
-            self.test_clear_all_data,  # This should be last
+            self.test_clear_all_data,
         ]
         
         passed = 0

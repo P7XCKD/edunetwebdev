@@ -255,69 +255,11 @@ class StudyPlannerTester:
             self.log_test("Add Custom Section", False, str(e))
             return False
 
-    def create_multiple_test_cards(self):
-        """Create multiple test cards for comprehensive testing"""
-        try:
-            cards_to_create = [
-                {"title": "Math Homework", "subject": "Mathematics", "priority": "high"},
-                {"title": "Science Project", "subject": "Physics", "priority": "medium"},
-                {"title": "History Essay", "subject": "History", "priority": "low"},
-                {"title": "Programming Assignment", "subject": "Computer Science", "priority": "high"}
-            ]
-            
-            for i, card_data in enumerate(cards_to_create):
-                add_btn = self.wait_for_element(By.ID, "addCardBtn")
-                if not add_btn:
-                    break
-                    
-                add_btn.click()
-                
-                # Fill title
-                title_input = self.wait_for_element(By.ID, "cardTitle")
-                if title_input:
-                    title_input.clear()
-                    title_input.send_keys(card_data["title"])
-                
-                # Fill subject
-                subject_input = self.driver.find_element(By.ID, "cardSubject")
-                subject_input.clear()
-                subject_input.send_keys(card_data["subject"])
-                
-                # Set priority
-                priority_select = Select(self.driver.find_element(By.ID, "cardPriority"))
-                priority_select.select_by_value(card_data["priority"])
-                
-                # Set due date (tomorrow + i days)
-                due_date = (datetime.now() + timedelta(days=i+1)).strftime("%Y-%m-%d")
-                due_date_input = self.driver.find_element(By.ID, "cardDueDate")
-                due_date_input.clear()
-                due_date_input.send_keys(due_date)
-                
-                # Add description
-                description = self.driver.find_element(By.ID, "cardDescription")
-                description.clear()
-                description.send_keys(f"Test description for {card_data['title']}")
-                
-                # Save card
-                save_btn = self.driver.find_element(By.ID, "saveCard")
-                save_btn.click()
-                
-                time.sleep(0.5)  # Brief pause between cards
-            
-            # Verify cards were created
-            time.sleep(1)
-            cards = self.driver.find_elements(By.CLASS_NAME, "study-card")
-            return len(cards) >= len(cards_to_create)
-            
-        except Exception as e:
-            print(f"Error creating test cards: {e}")
-            return False
-
     def ensure_test_cards_exist(self):
         """Ensure we have test cards for testing"""
         cards = self.driver.find_elements(By.CLASS_NAME, "study-card")
         if len(cards) == 0:
-            # Add a simple test card
+            # Add a test card
             try:
                 add_btn = self.wait_for_element(By.ID, "addCardBtn")
                 if add_btn:
@@ -333,19 +275,6 @@ class StudyPlannerTester:
             except:
                 pass
         return len(cards) > 0
-
-    def test_multiple_cards_creation(self):
-        """Test 13: Create Multiple Test Cards"""
-        try:
-            success = self.create_multiple_test_cards()
-            cards = self.driver.find_elements(By.CLASS_NAME, "study-card")
-            card_count = len(cards)
-            
-            self.log_test("Multiple Cards Creation", success, f"Created {card_count} cards")
-            return success
-        except Exception as e:
-            self.log_test("Multiple Cards Creation", False, str(e))
-            return False
 
     def test_drag_and_drop(self):
         """Test 6: Drag and Drop Functionality"""
@@ -386,11 +315,6 @@ class StudyPlannerTester:
     def test_card_context_menu(self):
         """Test 7: Card Context Menu"""
         try:
-            # Ensure we have cards
-            if not self.ensure_test_cards_exist():
-                self.log_test("Card Context Menu", False, "Could not create test cards")
-                return False
-                
             cards = self.driver.find_elements(By.CLASS_NAME, "study-card")
             if not cards:
                 self.log_test("Card Context Menu", False, "No cards found")
@@ -409,7 +333,7 @@ class StudyPlannerTester:
                 # Click somewhere else to close menu
                 self.driver.find_element(By.TAG_NAME, "body").click()
             
-            self.log_test("Card Context Menu", success, "Context menu appeared" if success else "Context menu not found")
+            self.log_test("Card Context Menu", success)
             return success
         except Exception as e:
             self.log_test("Card Context Menu", False, str(e))
@@ -418,11 +342,6 @@ class StudyPlannerTester:
     def test_edit_card(self):
         """Test 8: Edit Card"""
         try:
-            # Ensure we have cards
-            if not self.ensure_test_cards_exist():
-                self.log_test("Edit Card", False, "Could not create test cards")
-                return False
-                
             cards = self.driver.find_elements(By.CLASS_NAME, "study-card")
             if not cards:
                 self.log_test("Edit Card", False, "No cards found")
@@ -434,13 +353,12 @@ class StudyPlannerTester:
             
             # Wait for modal
             modal = self.wait_for_element(By.ID, "cardModal")
-            if not modal or not modal.is_displayed():
+            if not modal.is_displayed():
                 self.log_test("Edit Card", False, "Modal not opened")
                 return False
             
             # Modify title
             title_input = self.driver.find_element(By.ID, "cardTitle")
-            original_title = title_input.get_attribute("value")
             title_input.clear()
             title_input.send_keys("Updated Test Task")
             
@@ -450,7 +368,7 @@ class StudyPlannerTester:
             
             time.sleep(1)
             success = True  # If no error, consider success
-            self.log_test("Edit Card", success, f"Card edited from '{original_title}' to 'Updated Test Task'")
+            self.log_test("Edit Card", success, "Card edited successfully")
             return success
         except Exception as e:
             self.log_test("Edit Card", False, str(e))
@@ -580,7 +498,6 @@ class StudyPlannerTester:
             self.test_add_card_modal,
             self.test_add_new_card,
             self.test_task_id_display,
-            self.test_multiple_cards_creation,  # Create more test data
             self.test_add_custom_section,
             self.test_drag_and_drop,
             self.test_card_context_menu,
@@ -588,7 +505,7 @@ class StudyPlannerTester:
             self.test_export_pdf,
             self.test_local_storage,
             self.test_responsive_design,
-            self.test_clear_all_data,  # This should be last
+            self.test_clear_all_data,
         ]
         
         passed = 0

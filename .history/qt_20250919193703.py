@@ -580,7 +580,6 @@ class StudyPlannerTester:
             self.test_add_card_modal,
             self.test_add_new_card,
             self.test_task_id_display,
-            self.test_multiple_cards_creation,  # Create more test data
             self.test_add_custom_section,
             self.test_drag_and_drop,
             self.test_card_context_menu,
@@ -588,7 +587,7 @@ class StudyPlannerTester:
             self.test_export_pdf,
             self.test_local_storage,
             self.test_responsive_design,
-            self.test_clear_all_data,  # This should be last
+            self.test_clear_all_data,
         ]
         
         passed = 0
