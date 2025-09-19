@@ -102,14 +102,14 @@ body {
 
 .column-header {
     padding: 16px 20px;
-    border-bottom: 1px solid #30363d; /* Border matching image */
+    border-bottom: 1px solid #404040;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .column-header h3 {
-    color: #e6edf3; /* Text color matching image */
+    color: #e1e1e1;
     font-size: 16px;
     font-weight: 600;
     margin: 0;
@@ -216,8 +216,8 @@ body {
 
 /* Study Cards */
 .study-card {
-    background-color: #21262d; /* Card background matching image */
-    border: 1px solid #30363d;
+    background-color: #3d3d3d;
+    border: 1px solid #555;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
@@ -226,7 +226,7 @@ body {
 }
 
 .study-card:hover {
-    border-color: #6e7681;
+    border-color: #666;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
@@ -256,9 +256,9 @@ body {
 }
 
 .card-header {
-    background-color: #30363d; /* Grey header background matching image exactly */
+    background-color: #555; /* Grey header background like in the image */
     padding: 12px 15px 8px 15px;
-    border-bottom: 1px solid #6e7681;
+    border-bottom: 1px solid #666;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -275,7 +275,7 @@ body {
 .card-title {
     font-size: 16px;
     font-weight: 600;
-    color: #e6edf3; /* Lighter text on grey background matching image */
+    color: #f0f0f0; /* Lighter text on grey background */
     margin: 0;
 }
 
@@ -291,7 +291,7 @@ body {
 }
 
 .card-meta {
-    background-color: #21262d; /* Dark body background matching image */
+    background-color: #3d3d3d; /* Dark body background */
     padding: 12px 15px;
     display: flex;
     align-items: center;
@@ -354,9 +354,9 @@ body {
 }
 
 .card-description {
-    background-color: #21262d; /* Dark body background matching image */
+    background-color: #3d3d3d; /* Dark body background */
     padding: 0 15px 12px 15px;
-    color: #7d8590; /* Muted text color matching image */
+    color: #bbb;
     font-size: 14px;
     line-height: 1.4;
 }
@@ -391,7 +391,7 @@ body {
 
 .completion-toggle-btn {
     background: none;
-    border: 1px solid #6e7681; /* Border matching image colors */
+    border: 1px solid #777;
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -401,7 +401,7 @@ body {
     cursor: pointer;
     font-size: 10px;
     transition: all 0.2s ease;
-    color: #7d8590; /* Text color matching image */
+    color: #ccc;
     flex-shrink: 0; /* Prevent button from shrinking */
 }
 
@@ -425,8 +425,8 @@ body {
 /* Add Card Button */
 .add-card-column-btn {
     background: none;
-    border: 2px dashed #6e7681; /* Border color matching image */
-    color: #7d8590; /* Text color matching image */
+    border: 2px dashed #555;
+    color: #999;
     padding: 12px;
     border-radius: 8px;
     cursor: pointer;
@@ -436,9 +436,9 @@ body {
 }
 
 .add-card-column-btn:hover {
-    border-color: #8b949e;
-    color: #e6edf3;
-    background-color: #30363d;
+    border-color: #777;
+    color: #e1e1e1;
+    background-color: #3d3d3d;
 }
 
 /* Modal Styles */
