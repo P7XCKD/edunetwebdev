@@ -1,0 +1,3 @@
+# Requirements for Smart Study Planner Test Suite
+selenium==4.15.0
+webdriver-manager==4.0.1

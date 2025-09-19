@@ -1,0 +1,83 @@
+{
+  "timestamp": "2025-09-19T19:34:38.130126",
+  "summary": {
+    "total_tests": 12,
+    "passed": 8,
+    "failed": 4,
+    "success_rate": 66.66666666666666
+  },
+  "test_details": [
+    {
+      "test": "Page Load",
+      "success": true,
+      "message": "Title: Smart Study Planner",
+      "timestamp": "2025-09-19T19:34:13.000405"
+    },
+    {
+      "test": "Add Card Modal",
+      "success": true,
+      "message": "",
+      "timestamp": "2025-09-19T19:34:14.180718"
+    },
+    {
+      "test": "Add New Card",
+      "success": true,
+      "message": "Found 1 cards",
+      "timestamp": "2025-09-19T19:34:17.112665"
+    },
+    {
+      "test": "Task ID Display",
+      "success": true,
+      "message": "Task ID: TSK-001",
+      "timestamp": "2025-09-19T19:34:18.128631"
+    },
+    {
+      "test": "Add Custom Section",
+      "success": false,
+      "message": "Found sections: []",
+      "timestamp": "2025-09-19T19:34:20.319323"
+    },
+    {
+      "test": "Drag and Drop",
+      "success": false,
+      "message": "No cards to drag",
+      "timestamp": "2025-09-19T19:34:21.326221"
+    },
+    {
+      "test": "Card Context Menu",
+      "success": false,
+      "message": "No cards found",
+      "timestamp": "2025-09-19T19:34:22.333344"
+    },
+    {
+      "test": "Edit Card",
+      "success": false,
+      "message": "No cards found",
+      "timestamp": "2025-09-19T19:34:23.341079"
+    },
+    {
+      "test": "Export PDF",
+      "success": true,
+      "message": "Export window opened with content",
+      "timestamp": "2025-09-19T19:34:27.467992"
+    },
+    {
+      "test": "Local Storage",
+      "success": true,
+      "message": "Data persists after refresh",
+      "timestamp": "2025-09-19T19:34:31.664536"
+    },
+    {
+      "test": "Responsive Design",
+      "success": true,
+      "message": "Mobile view test",
+      "timestamp": "2025-09-19T19:34:34.545174"
+    },
+    {
+      "test": "Clear All Data",
+      "success": true,
+      "message": "Remaining cards: 0",
+      "timestamp": "2025-09-19T19:34:37.129129"
+    }
+  ]
+}
