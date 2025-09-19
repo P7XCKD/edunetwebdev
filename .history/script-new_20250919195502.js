@@ -1,4 +1,7 @@
-// Smart Study Planner 
+// Smart Study Planner - CLEAN VERSION (NO NOTIFICATIONS)
+console.log('Loading script-new.js - CLEAN VERSION - NO NOTIFICATIONS ANYWHERE');
+console.log('If you see any notifications, they are NOT from this script!');
+
 class StudyPlannerKanban {
     constructor() {
         this.cards = JSON.parse(localStorage.getItem('studyCards')) || [];
@@ -182,7 +185,6 @@ class StudyPlannerKanban {
             if (column) {
                 column.name = name;
                 column.color = color;
-                this.showNotification('Section updated successfully');
             }
         } else {
             // Create new column
@@ -721,32 +723,6 @@ class StudyPlannerKanban {
 
     saveColumnsToStorage() {
         localStorage.setItem('studyColumns', JSON.stringify(this.columns));
-    }
-
-    showNotification(message) {
-        // Create toast notification
-        const toast = document.createElement('div');
-        toast.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 6px;
-            z-index: 1002;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        `;
-        toast.textContent = message;
-        document.body.appendChild(toast);
-
-        // Remove toast after 3 seconds
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
-            }
-        }, 3000);
     }
 
     // Export to PDF functionality
