@@ -379,45 +379,6 @@ body {
     border-radius: 4px;
 }
 
-/* Due Date Section with Completion Button */
-.due-date-section {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.completion-toggle-btn {
-    background: none;
-    border: 1px solid #555;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s ease;
-    color: #999;
-}
-
-.completion-toggle-btn:hover {
-    border-color: #28a745;
-    background-color: #28a74520;
-    transform: scale(1.1);
-}
-
-.completion-toggle-btn.completed {
-    border-color: #28a745;
-    background-color: #28a745;
-    color: white;
-}
-
-.completion-toggle-btn.completed:hover {
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
-
 /* Add Card Button */
 .add-card-column-btn {
     background: none;

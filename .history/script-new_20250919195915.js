@@ -642,13 +642,7 @@ class StudyPlannerKanban {
             dueDateHtml = `<span class="card-due-date ${dueDateClass}">${dueDateText}</span>`;
         }
 
-        const completionButton = `
-            <button class="completion-toggle-btn ${card.isCompleted ? 'completed' : ''}" 
-                    data-card-id="${card.id}" 
-                    title="${card.isCompleted ? 'Mark as Not Done' : 'Mark as Done'}">
-                ${card.isCompleted ? '✅' : '⭕'}
-            </button>
-        `;
+        const completionBadge = card.isCompleted ? '<span class="completion-badge">✅ Done</span>' : '';
 
         cardDiv.innerHTML = `
             <div class="card-header">
@@ -657,11 +651,9 @@ class StudyPlannerKanban {
             </div>
             <div class="card-meta">
                 ${card.subject ? `<span class="card-subject">${card.subject}</span>` : ''}
-                <div class="due-date-section">
-                    ${dueDateHtml}
-                    ${completionButton}
-                </div>
+                ${dueDateHtml}
                 <span class="priority-tag priority-${card.priority}">${card.priority}</span>
+                ${completionBadge}
             </div>
             ${card.description ? `<div class="card-description">${card.description}</div>` : ''}
         `;
@@ -681,20 +673,11 @@ class StudyPlannerKanban {
 
         // Add click handler to edit card
         cardDiv.addEventListener('click', (e) => {
-            // Don't trigger click during drag or if clicking the completion button
-            if (!this.isDragging && !e.target.classList.contains('completion-toggle-btn')) {
+            // Don't trigger click during drag
+            if (!this.isDragging) {
                 this.openCardModal(card);
             }
         });
-
-        // Add completion toggle button event listener
-        const completionBtn = cardDiv.querySelector('.completion-toggle-btn');
-        if (completionBtn) {
-            completionBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent card modal from opening
-                this.toggleCardCompletion(card.id);
-            });
-        }
 
         // Add context menu for status change
         cardDiv.addEventListener('contextmenu', (e) => {
@@ -879,10 +862,6 @@ class StudyPlannerKanban {
                         background: #5d2323;
                         border-color: #8e2f2f;
                     }
-                    .calendar td.has-completed {
-                        background: #2d5d23;
-                        border-color: #4f8e2f;
-                    }
                     .day-number {
                         font-size: 14px;
                         font-weight: 500;
@@ -899,9 +878,6 @@ class StudyPlannerKanban {
                     }
                     .overdue-indicator {
                         background: rgba(220, 53, 69, 0.8);
-                    }
-                    .completed-indicator {
-                        background: rgba(40, 167, 69, 0.8);
                     }
                     
                     .section {
@@ -1004,22 +980,6 @@ class StudyPlannerKanban {
                         border-radius: 4px;
                         border-left: 3px solid #555;
                     }
-                    .completion-badge {
-                        background: #28a745;
-                        color: white;
-                        padding: 4px 8px;
-                        border-radius: 12px;
-                        font-size: 10px;
-                        font-weight: 600;
-                    }
-                    .study-card.completed {
-                        opacity: 0.8;
-                        border-left: 4px solid #28a745;
-                    }
-                    .study-card.completed .card-title {
-                        text-decoration: line-through;
-                        opacity: 0.7;
-                    }
                     .empty-section {
                         color: #666;
                         font-style: italic;
@@ -1115,10 +1075,6 @@ class StudyPlannerKanban {
                     <div class="legend-item">
                         <div class="legend-color" style="background: #4a5d23;"></div>
                         Has Tasks
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #2d5d23;"></div>
-                        Has Completed Tasks
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #5d2323;"></div>
@@ -1298,34 +1254,17 @@ class StudyPlannerKanban {
                     // Current month's days
                     const isToday = (currentDay === today.getDate() && month === today.getMonth() && year === today.getFullYear());
                     const dayTasks = tasksByDay[currentDay] || [];
-                    const hasOverdue = dayTasks.some(task => new Date(task.dueDate) < today && !task.isCompleted);
-                    const hasCompleted = dayTasks.some(task => task.isCompleted);
+                    const hasOverdue = dayTasks.some(task => new Date(task.dueDate) < today);
                     
                     let cellClass = '';
                     if (isToday) cellClass = 'today';
-                    else if (hasCompleted) cellClass = 'has-completed';
                     else if (hasOverdue) cellClass = 'has-overdue';
                     else if (dayTasks.length > 0) cellClass = 'has-tasks';
 
                     let indicator = '';
                     if (dayTasks.length > 0) {
-                        const completedTasks = dayTasks.filter(task => task.isCompleted).length;
-                        const overdueTasks = dayTasks.filter(task => new Date(task.dueDate) < today && !task.isCompleted).length;
-                        
-                        let indicatorClass = '';
-                        let indicatorText = '';
-                        
-                        if (completedTasks > 0) {
-                            indicatorClass = 'completed-indicator';
-                            indicatorText = `${completedTasks} done`;
-                        } else if (overdueTasks > 0) {
-                            indicatorClass = 'overdue-indicator';
-                            indicatorText = `${dayTasks.length} task${dayTasks.length > 1 ? 's' : ''}`;
-                        } else {
-                            indicatorText = `${dayTasks.length} task${dayTasks.length > 1 ? 's' : ''}`;
-                        }
-                        
-                        indicator = `<div class="task-indicator ${indicatorClass}">${indicatorText}</div>`;
+                        const indicatorClass = hasOverdue ? 'overdue-indicator' : '';
+                        indicator = `<div class="task-indicator ${indicatorClass}">${dayTasks.length} task${dayTasks.length > 1 ? 's' : ''}</div>`;
                     }
 
                     calendarHtml += `<td class="${cellClass}"><div class="day-number">${currentDay}</div>${indicator}</td>`;

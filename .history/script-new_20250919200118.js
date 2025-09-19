@@ -681,20 +681,11 @@ class StudyPlannerKanban {
 
         // Add click handler to edit card
         cardDiv.addEventListener('click', (e) => {
-            // Don't trigger click during drag or if clicking the completion button
-            if (!this.isDragging && !e.target.classList.contains('completion-toggle-btn')) {
+            // Don't trigger click during drag
+            if (!this.isDragging) {
                 this.openCardModal(card);
             }
         });
-
-        // Add completion toggle button event listener
-        const completionBtn = cardDiv.querySelector('.completion-toggle-btn');
-        if (completionBtn) {
-            completionBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent card modal from opening
-                this.toggleCardCompletion(card.id);
-            });
-        }
 
         // Add context menu for status change
         cardDiv.addEventListener('contextmenu', (e) => {
