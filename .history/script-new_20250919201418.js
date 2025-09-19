@@ -177,17 +177,8 @@ class StudyPlannerKanban {
     }
 
     closeColumnModal() {
-        const modal = document.getElementById('columnModal');
-        modal.style.display = 'none';
-        
-        // Clear the form fields
-        document.getElementById('columnName').value = '';
-        document.getElementById('columnColor').value = 'default';
-        
-        // Reset the editing state
+        document.getElementById('columnModal').style.display = 'none';
         this.currentEditColumnId = null;
-        
-        console.log('✅ Column modal closed and state reset');
     }
 
     saveColumn() {
@@ -205,7 +196,6 @@ class StudyPlannerKanban {
             if (column) {
                 column.name = name;
                 column.color = color;
-                console.log(`✅ Updated column "${column.name}" successfully`);
             }
         } else {
             // Create new column
@@ -216,21 +206,11 @@ class StudyPlannerKanban {
                 order: this.columns.length + 1
             };
             this.columns.push(newColumn);
-            console.log(`✅ Created new column "${newColumn.name}" successfully`);
         }
 
-        // Save to storage first
         this.saveColumnsToStorage();
-        
-        // Close modal before re-rendering to avoid conflicts
-        this.closeColumnModal();
-        
-        // Force complete re-render of columns and cards
         this.renderColumns();
-        this.renderCards();
-        this.updateStats();
-        
-        console.log('✅ Column saved and interface updated');
+        this.closeColumnModal();
     }
 
     deleteColumn() {
@@ -261,49 +241,23 @@ class StudyPlannerKanban {
 
     renderColumns() {
         const kanbanBoard = document.getElementById('kanbanBoard');
-        if (!kanbanBoard) {
-            console.error('❌ kanbanBoard element not found');
-            return;
-        }
-        
         const addColumnSection = kanbanBoard.querySelector('.add-column-section');
-        if (!addColumnSection) {
-            console.error('❌ add-column-section not found');
-            return;
-        }
         
-        // Remove ALL existing columns completely
+        // Remove existing columns
         const existingColumns = kanbanBoard.querySelectorAll('.board-column');
-        existingColumns.forEach(col => {
-            col.remove();
-        });
-
-        // Validate columns data
-        if (!this.columns || !Array.isArray(this.columns)) {
-            console.error('❌ Invalid columns data:', this.columns);
-            return;
-        }
+        existingColumns.forEach(col => col.remove());
 
         // Sort columns by order
         const sortedColumns = [...this.columns].sort((a, b) => a.order - b.order);
 
-        // Create fresh columns
+        // Create columns
         sortedColumns.forEach(column => {
             const columnElement = this.createColumnElement(column);
-            if (columnElement) {
-                kanbanBoard.insertBefore(columnElement, addColumnSection);
-            }
+            kanbanBoard.insertBefore(columnElement, addColumnSection);
         });
-        
-        console.log(`✅ Rendered ${sortedColumns.length} columns successfully`);
     }
 
     createColumnElement(column) {
-        if (!column || !column.id || !column.name) {
-            console.error('❌ Invalid column data:', column);
-            return null;
-        }
-        
         const columnDiv = document.createElement('div');
         columnDiv.className = `board-column ${column.color !== 'default' ? `color-${column.color}` : ''}`;
         columnDiv.setAttribute('data-column-id', column.id);
@@ -321,8 +275,6 @@ class StudyPlannerKanban {
             </div>
         `;
 
-        console.log(`✅ Created column element for "${column.name}" (ID: ${column.id})`);
-        
         // Add drag and drop event listeners for the column
         const columnContent = columnDiv.querySelector('.column-content');
         

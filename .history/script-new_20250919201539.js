@@ -261,16 +261,7 @@ class StudyPlannerKanban {
 
     renderColumns() {
         const kanbanBoard = document.getElementById('kanbanBoard');
-        if (!kanbanBoard) {
-            console.error('❌ kanbanBoard element not found');
-            return;
-        }
-        
         const addColumnSection = kanbanBoard.querySelector('.add-column-section');
-        if (!addColumnSection) {
-            console.error('❌ add-column-section not found');
-            return;
-        }
         
         // Remove ALL existing columns completely
         const existingColumns = kanbanBoard.querySelectorAll('.board-column');
@@ -278,32 +269,19 @@ class StudyPlannerKanban {
             col.remove();
         });
 
-        // Validate columns data
-        if (!this.columns || !Array.isArray(this.columns)) {
-            console.error('❌ Invalid columns data:', this.columns);
-            return;
-        }
-
         // Sort columns by order
         const sortedColumns = [...this.columns].sort((a, b) => a.order - b.order);
 
         // Create fresh columns
         sortedColumns.forEach(column => {
             const columnElement = this.createColumnElement(column);
-            if (columnElement) {
-                kanbanBoard.insertBefore(columnElement, addColumnSection);
-            }
+            kanbanBoard.insertBefore(columnElement, addColumnSection);
         });
         
         console.log(`✅ Rendered ${sortedColumns.length} columns successfully`);
     }
 
     createColumnElement(column) {
-        if (!column || !column.id || !column.name) {
-            console.error('❌ Invalid column data:', column);
-            return null;
-        }
-        
         const columnDiv = document.createElement('div');
         columnDiv.className = `board-column ${column.color !== 'default' ? `color-${column.color}` : ''}`;
         columnDiv.setAttribute('data-column-id', column.id);
@@ -321,8 +299,6 @@ class StudyPlannerKanban {
             </div>
         `;
 
-        console.log(`✅ Created column element for "${column.name}" (ID: ${column.id})`);
-        
         // Add drag and drop event listeners for the column
         const columnContent = columnDiv.querySelector('.column-content');
         

@@ -50,7 +50,7 @@ class StudyPlannerKanban {
         this.updateStats();
     }
 
-    // Migrate existing cards to have task IDs and handle orphaned cards
+    // Migrate existing cards to have task IDs and update old status values
     migrateExistingCards() {
         let needsSave = false;
         this.cards.forEach(card => {
@@ -59,13 +59,23 @@ class StudyPlannerKanban {
                 needsSave = true;
             }
             
-            // Only migrate if the current status doesn't exist in available columns
+            // Migrate old status values to new ones
+            const statusMigration = {
+                'todo': 'backlog',
+                'in-progress': 'active', 
+                'completed': 'finished'
+            };
+            
+            if (statusMigration[card.status]) {
+                card.status = statusMigration[card.status];
+                needsSave = true;
+            }
+            
+            // Ensure status exists in current columns, if not move to first column
             const statusExists = this.columns.some(col => col.id === card.status);
             if (!statusExists && this.columns.length > 0) {
-                // Move orphaned cards to the first available column
                 card.status = this.columns[0].id;
                 needsSave = true;
-                console.log(`Migrated orphaned card "${card.title}" to column "${this.columns[0].name}"`);
             }
         });
         if (needsSave) {
@@ -177,17 +187,8 @@ class StudyPlannerKanban {
     }
 
     closeColumnModal() {
-        const modal = document.getElementById('columnModal');
-        modal.style.display = 'none';
-        
-        // Clear the form fields
-        document.getElementById('columnName').value = '';
-        document.getElementById('columnColor').value = 'default';
-        
-        // Reset the editing state
+        document.getElementById('columnModal').style.display = 'none';
         this.currentEditColumnId = null;
-        
-        console.log('✅ Column modal closed and state reset');
     }
 
     saveColumn() {
@@ -205,7 +206,6 @@ class StudyPlannerKanban {
             if (column) {
                 column.name = name;
                 column.color = color;
-                console.log(`✅ Updated column "${column.name}" successfully`);
             }
         } else {
             // Create new column
@@ -216,21 +216,11 @@ class StudyPlannerKanban {
                 order: this.columns.length + 1
             };
             this.columns.push(newColumn);
-            console.log(`✅ Created new column "${newColumn.name}" successfully`);
         }
 
-        // Save to storage first
         this.saveColumnsToStorage();
-        
-        // Close modal before re-rendering to avoid conflicts
-        this.closeColumnModal();
-        
-        // Force complete re-render of columns and cards
         this.renderColumns();
-        this.renderCards();
-        this.updateStats();
-        
-        console.log('✅ Column saved and interface updated');
+        this.closeColumnModal();
     }
 
     deleteColumn() {
@@ -261,49 +251,23 @@ class StudyPlannerKanban {
 
     renderColumns() {
         const kanbanBoard = document.getElementById('kanbanBoard');
-        if (!kanbanBoard) {
-            console.error('❌ kanbanBoard element not found');
-            return;
-        }
-        
         const addColumnSection = kanbanBoard.querySelector('.add-column-section');
-        if (!addColumnSection) {
-            console.error('❌ add-column-section not found');
-            return;
-        }
         
-        // Remove ALL existing columns completely
+        // Remove existing columns
         const existingColumns = kanbanBoard.querySelectorAll('.board-column');
-        existingColumns.forEach(col => {
-            col.remove();
-        });
-
-        // Validate columns data
-        if (!this.columns || !Array.isArray(this.columns)) {
-            console.error('❌ Invalid columns data:', this.columns);
-            return;
-        }
+        existingColumns.forEach(col => col.remove());
 
         // Sort columns by order
         const sortedColumns = [...this.columns].sort((a, b) => a.order - b.order);
 
-        // Create fresh columns
+        // Create columns
         sortedColumns.forEach(column => {
             const columnElement = this.createColumnElement(column);
-            if (columnElement) {
-                kanbanBoard.insertBefore(columnElement, addColumnSection);
-            }
+            kanbanBoard.insertBefore(columnElement, addColumnSection);
         });
-        
-        console.log(`✅ Rendered ${sortedColumns.length} columns successfully`);
     }
 
     createColumnElement(column) {
-        if (!column || !column.id || !column.name) {
-            console.error('❌ Invalid column data:', column);
-            return null;
-        }
-        
         const columnDiv = document.createElement('div');
         columnDiv.className = `board-column ${column.color !== 'default' ? `color-${column.color}` : ''}`;
         columnDiv.setAttribute('data-column-id', column.id);
@@ -321,8 +285,6 @@ class StudyPlannerKanban {
             </div>
         `;
 
-        console.log(`✅ Created column element for "${column.name}" (ID: ${column.id})`);
-        
         // Add drag and drop event listeners for the column
         const columnContent = columnDiv.querySelector('.column-content');
         
@@ -500,7 +462,7 @@ class StudyPlannerKanban {
             const newCard = {
                 id: Date.now(),
                 taskId: this.generateTaskId(),
-                status: this.defaultStatus || (this.columns.length > 0 ? this.columns[0].id : 'category1'),
+                status: this.defaultStatus || (this.columns.length > 0 ? this.columns[0].id : 'todo'),
                 ...cardData
             };
             this.cards.push(newCard);
@@ -774,7 +736,7 @@ class StudyPlannerKanban {
             stats[column.id] = this.cards.filter(c => c.status === column.id).length;
         });
 
-        // Update stats modal with dynamic content
+        // Update stats modal
         const totalElement = document.getElementById('totalCards');
         const completedElement = document.getElementById('completedCards');
         const overdueElement = document.getElementById('overdueCards');
@@ -783,7 +745,14 @@ class StudyPlannerKanban {
         if (completedElement) completedElement.textContent = stats.completed;
         if (overdueElement) overdueElement.textContent = stats.overdue;
 
-        // No more hardcoded column references - everything is dynamic now
+        // Update dynamic column stats - only update if elements exist (for backward compatibility)
+        const todoElement = document.getElementById('todoCards');
+        const inProgressElement = document.getElementById('inProgressCards');
+        const completedColumnElement = document.getElementById('completedCards');
+
+        // These are legacy elements - we'll update them if they exist but won't rely on them
+        if (todoElement) todoElement.textContent = stats['backlog'] || stats['todo'] || 0;
+        if (inProgressElement) inProgressElement.textContent = stats['active'] || stats['in-progress'] || 0;
     }
 
     closeCardModal() {
@@ -1435,25 +1404,21 @@ class StudyPlannerKanban {
         const totalCards = this.cards.length;
         const totalSections = this.columns.length;
         
-        const confirmMessage = `Are you sure you want to clear all data?\n\nThis will permanently delete:\n- ${totalCards} cards\n- ${totalSections} custom categories\n\nThis action cannot be undone.\n\nAfter clearing, you'll start with 3 blank categories that you can rename to anything you want.`;
+        const confirmMessage = `Are you sure you want to clear all data?\n\nThis will permanently delete:\n- ${totalCards} cards\n- ${totalSections} custom sections\n\nThis action cannot be undone.`;
         
         if (confirm(confirmMessage)) {
-            // Reset to default state with generic names
+            // Reset to default state
             this.cards = [];
             this.columns = this.getDefaultColumns();
-            this.taskCounter = 1;
             
             // Save to storage
             this.saveToStorage();
             this.saveColumnsToStorage();
-            localStorage.setItem('taskCounter', '1');
             
             // Re-render everything
             this.renderColumns();
             this.renderCards();
             this.updateStats();
-            
-            console.log('✅ All data cleared! You can now rename the categories to whatever you want.');
         }
     }
 
@@ -1479,14 +1444,11 @@ class StudyPlannerKanban {
 document.addEventListener('DOMContentLoaded', () => {
     window.studyPlanner = new StudyPlannerKanban();
     
-    console.log('🎯 Smart Study Planner loaded successfully!');
-    console.log('📝 COMPLETE CUSTOMIZATION AVAILABLE:');
-    console.log('   • Edit any category name by clicking the ✎ button');
-    console.log('   • Delete categories you don\'t need');
-    console.log('   • Add new categories with "+ Add Section"');
-    console.log('   • PDF exports will show YOUR category names');
-    console.log('   • Mark cards as done with ⭕/✅ buttons');
-    console.log('💡 TIP: Categories are your workflow, completion (✅) tracks what\'s actually done');
+    console.log('Smart Study Planner (Dynamic Kanban) loaded successfully!');
+    console.log('- Click "+ Add Section" to create custom columns');
+    console.log('- Right-click on column menu (⋮) to edit/delete sections');
+    console.log('- Right-click on cards to move between sections');
+    console.log('- Press Ctrl+E to export your data');
     
     // Export shortcut
     document.addEventListener('keydown', (e) => {
