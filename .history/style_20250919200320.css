@@ -346,25 +346,27 @@ body {
 }
 
 .card-description {
-    background-color: #3d3d3d; /* Dark body background */
-    padding: 0 15px 12px 15px;
     color: #bbb;
     font-size: 14px;
     line-height: 1.4;
+    margin-top: 8px;
+}
+
+/* Card Completion Styles */
+.completion-badge {
+    background-color: #28a745;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .study-card.completed {
     opacity: 0.8;
     border-left: 4px solid #28a745;
-}
-
-.study-card.completed .card-header {
-    background-color: #4a4a4a; /* Slightly darker grey for completed cards */
-}
-
-.study-card.completed .card-meta,
-.study-card.completed .card-description {
-    background-color: #2a3d2a; /* Dark green tint for completed card body */
+    background-color: #2a3d2a;
 }
 
 .study-card.completed .card-title {
