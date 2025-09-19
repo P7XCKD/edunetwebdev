@@ -26,7 +26,9 @@ except ImportError:
     WEBDRIVER_MANAGER_AVAILABLE = False
 
 class StudyPlannerTester:
-    def __init__(self):
+    def __init__(self, headless=False, fast_mode=False):
+        self.headless = headless
+        self.fast_mode = fast_mode
         self.setup_driver()
         self.test_results = []
         self.base_url = f"file://{os.path.abspath('index.html')}"
@@ -43,6 +45,20 @@ class StudyPlannerTester:
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_experimental_option('useAutomationExtension', False)
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        
+        # Add headless mode for background testing
+        if self.headless:
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--disable-gpu")
+            print("🔇 Running in headless mode (no browser window)")
+        
+        # Fast mode optimizations
+        if self.fast_mode:
+            chrome_options.add_argument("--disable-images")
+            chrome_options.add_argument("--disable-javascript")
+            chrome_options.add_argument("--disable-plugins")
+            chrome_options.add_argument("--disable-extensions")
+            print("⚡ Fast mode enabled")
         
         try:
             print("Setting up Chrome WebDriver...")
@@ -638,12 +654,28 @@ class StudyPlannerTester:
             pass
 
 def main():
-    """Main function to run tests"""
-    print("Smart Study Planner - Automated Test Suite")
+    """Main function to run tests with options"""
+    import sys
+    
+    # Check for command line arguments
+    headless = '--headless' in sys.argv
+    fast = '--fast' in sys.argv
+    console_only = '--console' in sys.argv
+    
+    if console_only:
+        print("🚀 Running Console-Only Tests...")
+        os.system('python qt_console.py')
+        return
+    
+    print("🎯 Smart Study Planner - Automated Test Suite")
+    if headless:
+        print("🔇 Headless Mode: No browser window will open")
+    if fast:
+        print("⚡ Fast Mode: Optimized for speed")
     print("Testing all components automatically...")
     print()
     
-    tester = StudyPlannerTester()
+    tester = StudyPlannerTester(headless=headless, fast_mode=fast)
     
     try:
         all_passed = tester.run_all_tests()

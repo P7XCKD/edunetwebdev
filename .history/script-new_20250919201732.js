@@ -1,4 +1,6 @@
-// Smart Study Planner
+// Smart Study Planner - COMPLETELY CLEAN VERSION (NO NOTIFICATIONS)
+console.log('✅ Loading script-new.js - COMPLETELY CLEAN VERSION');
+console.log('✅ ALL NOTIFICATIONS REMOVED - If you see any, they are NOT from this script!');
 
 class StudyPlannerKanban {
     constructor() {
@@ -216,7 +218,7 @@ class StudyPlannerKanban {
             if (column) {
                 column.name = name;
                 column.color = color;
-                console.log(`✅ Updated column "${column.name}" successfully (Enter key saves!)`);
+                console.log(`✅ Updated column "${column.name}" successfully`);
             }
         } else {
             // Create new column
@@ -227,7 +229,7 @@ class StudyPlannerKanban {
                 order: this.columns.length + 1
             };
             this.columns.push(newColumn);
-            console.log(`✅ Created new column "${newColumn.name}" successfully (Enter key saves!)`);
+            console.log(`✅ Created new column "${newColumn.name}" successfully`);
         }
 
         // Save to storage first

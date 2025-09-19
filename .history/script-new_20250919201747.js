@@ -1,4 +1,6 @@
-// Smart Study Planner
+// Smart Study Planner - COMPLETELY CLEAN VERSION (NO NOTIFICATIONS)
+console.log('✅ Loading script-new.js - COMPLETELY CLEAN VERSION');
+console.log('✅ ALL NOTIFICATIONS REMOVED - If you see any, they are NOT from this script!');
 
 class StudyPlannerKanban {
     constructor() {

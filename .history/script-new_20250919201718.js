@@ -1,4 +1,6 @@
-// Smart Study Planner
+// Smart Study Planner - COMPLETELY CLEAN VERSION (NO NOTIFICATIONS)
+console.log('✅ Loading script-new.js - COMPLETELY CLEAN VERSION');
+console.log('✅ ALL NOTIFICATIONS REMOVED - If you see any, they are NOT from this script!');
 
 class StudyPlannerKanban {
     constructor() {
@@ -216,7 +218,7 @@ class StudyPlannerKanban {
             if (column) {
                 column.name = name;
                 column.color = color;
-                console.log(`✅ Updated column "${column.name}" successfully (Enter key saves!)`);
+                console.log(`✅ Updated column "${column.name}" successfully`);
             }
         } else {
             // Create new column
@@ -227,7 +229,7 @@ class StudyPlannerKanban {
                 order: this.columns.length + 1
             };
             this.columns.push(newColumn);
-            console.log(`✅ Created new column "${newColumn.name}" successfully (Enter key saves!)`);
+            console.log(`✅ Created new column "${newColumn.name}" successfully`);
         }
 
         // Save to storage first
@@ -444,7 +446,6 @@ class StudyPlannerKanban {
         const modal = document.getElementById('cardModal');
         const titleElement = document.getElementById('modalTitle');
         const deleteBtn = document.getElementById('deleteCard');
-        const cardTitleInput = document.getElementById('cardTitle');
 
         // If no default status provided, use first column
         if (!defaultStatus && this.columns.length > 0) {
@@ -457,7 +458,7 @@ class StudyPlannerKanban {
             titleElement.textContent = 'Edit Card';
             deleteBtn.style.display = 'block';
             
-            cardTitleInput.value = card.title;
+            document.getElementById('cardTitle').value = card.title;
             document.getElementById('cardDueDate').value = card.dueDate || '';
             document.getElementById('cardPriority').value = card.priority;
             document.getElementById('cardSubject').value = card.subject || '';
@@ -469,7 +470,7 @@ class StudyPlannerKanban {
             titleElement.textContent = 'Add New Card';
             deleteBtn.style.display = 'none';
             
-            cardTitleInput.value = '';
+            document.getElementById('cardTitle').value = '';
             document.getElementById('cardDueDate').value = '';
             document.getElementById('cardPriority').value = 'medium';
             document.getElementById('cardSubject').value = '';
@@ -477,19 +478,7 @@ class StudyPlannerKanban {
         }
 
         modal.style.display = 'block';
-        cardTitleInput.focus();
-
-        // Add Enter key listener for auto-save (only on title field)
-        const handleEnterKey = (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                this.saveCard();
-                // Remove the listener after use
-                cardTitleInput.removeEventListener('keydown', handleEnterKey);
-            }
-        };
-        
-        cardTitleInput.addEventListener('keydown', handleEnterKey);
+        document.getElementById('cardTitle').focus();
     }
 
     saveCard() {
